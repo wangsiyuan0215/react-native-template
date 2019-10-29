@@ -1,0 +1,85 @@
+{
+    "name": "rn-app",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "re-init": "rm -rf node_modules && npm cache clean --force && npm install",
+        "start": "react-native start --reset-cache",
+        "lint": "eslint app",
+        "test": "jest",
+        "rename": "node ./node_modules/react-native-rename/lib/index.js",
+        "postinstall": "npx jetify",
+        "android-preBuild": "npm cache clean --force && npm install && npm run bundle-android",
+        "build-android-dev": "(npm run android-preBuild && cd android && ENVFILE=.env.dev ./gradlew clean && ./gradlew --stop && ENVFILE=.env.dev ./gradlew assembleDev)",
+        "build-android-test": "(npm run android-preBuild && cd android && ENVFILE=.env.test ./gradlew clean && ./gradlew --stop && ENVFILE=.env.test ./gradlew assembleAppTest)",
+        "build-android-pre": "(npm run android-preBuild && cd android && ENVFILE=.env.pre ./gradlew clean && ./gradlew --stop && ENVFILE=.env.pre ./gradlew assemblePreRelease)",
+        "build-android-prod": "(npm run android-preBuild && cd android && ENVFILE=.env.prod ./gradlew clean && ./gradlew --stop && ENVFILE=.env.prod ./gradlew assembleRelease)",
+        "bundle-ios": "react-native bundle --entry-file index.ios.js --platform ios --dev false --bundle-output ./ios/bundle/index.ios.jsbundle --assets-dest ./ios/bundle",
+        "bundle-android": "react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --sourcemap-output android/app/src/main/assets/index.android.map --assets-dest android/app/src/main/res/"
+    },
+    "dependencies": {
+        "@react-native-community/async-storage": "^1.6.1",
+        "dayjs": "1.8.15",
+        "dva-core": "1.4.0",
+        "dva-loading": "3.0.12",
+        "husky": "3.0.3",
+        "lint-staged": "9.2.1",
+        "lodash": "4.17.15",
+        "prop-types": "15.7.2",
+        "qs": "6.7.0",
+        "react": "16.8.6",
+        "react-native": "0.60.5",
+        "react-native-config": "0.11.7",
+        "react-native-exit-app": "1.0.0",
+        "react-native-gesture-handler": "^1.4.1",
+        "react-native-reanimated": "1.2.0",
+        "react-native-root-siblings": "3.2.1",
+        "react-navigation": "3.11.1",
+        "react-navigation-redux-helpers": "3.0.2",
+        "react-redux": "7.1.0",
+        "redux-persist": "5.10.0"
+    },
+    "devDependencies": {
+        "@babel/core": "7.5.5",
+        "@babel/plugin-proposal-decorators": "^7.4.4",
+        "@babel/runtime": "7.5.5",
+        "babel-eslint": "10.0.2",
+        "babel-jest": "24.8.0",
+        "babel-plugin-module-resolver": "^3.2.0",
+        "eslint": "5.16.0",
+        "eslint-config-airbnb": "17.1.1",
+        "eslint-config-prettier": "4.3.0",
+        "eslint-plugin-babel": "5.3.0",
+        "eslint-plugin-compat": "2.7.0",
+        "eslint-plugin-import": "2.18.2",
+        "eslint-plugin-jsx-a11y": "6.2.3",
+        "eslint-plugin-markdown": "1.0.0",
+        "eslint-plugin-react": "7.12.4",
+        "jest": "24.8.0",
+        "jetifier": "1.6.4",
+        "metro-react-native-babel-preset": "0.56.0",
+        "prettier": "1.16.4",
+        "react-native-rename": "^2.4.1",
+        "react-test-renderer": "16.8.6"
+    },
+    "jest": {
+        "preset": "react-native"
+    },
+    "lint-staged": {
+        "src/**/*.js": [
+            "eslint --fix --ext .js",
+            "prettier --write",
+            "git add"
+        ],
+        "src/**/*.less": [
+            "stylelint --syntax less",
+            "prettier --write",
+            "git add"
+        ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    }
+}
